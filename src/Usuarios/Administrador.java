@@ -33,5 +33,10 @@ public class Administrador extends Persona
         System.out.println("+-------------------------------------+");
         return;
     }
+    public Persona CrearCuenta(String usuario, int edad, Date creacion, String contrasena, char tipo)
+    {
+        Persona persona=new Persona(usuario,edad,creacion,contrasena,tipo);
+        return persona;
+    }
     
 }

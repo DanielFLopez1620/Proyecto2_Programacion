@@ -1,9 +1,10 @@
 package Usuarios;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
-public abstract class Persona 
+public class Persona implements Serializable
 {
     protected String usuario;
     protected String contrasena;
@@ -26,13 +27,11 @@ public abstract class Persona
     }
     public Persona(String usuario, int edad, Date creacion, String contrasena, char tipo)
     {
-        this.usuario = usuario;
-        this.contrasena = contrasena;
-        this.edad = edad;
-        this.creacion = creacion;
+        this(usuario, edad, creacion, contrasena);
         this.tipo = tipo;
     }
-    public String getUsuario() {
+    public String getUsuario() 
+    {
         return usuario;
     }
     /**
@@ -99,7 +98,7 @@ public abstract class Persona
     {
         return tipo;
     }
-    public abstract void Menu();
+    //public abstract void Menu();
 
     @Override
     public String toString() 
