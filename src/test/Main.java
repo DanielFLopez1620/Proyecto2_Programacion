@@ -13,7 +13,9 @@ import java.util.Scanner;
 
 import Funcionalidades.FuncionesPrograma;
 import Usuarios.Administrador;
+import Usuarios.Estudiante;
 import Usuarios.Persona;
+import Usuarios.Profesor;
 
 public class Main {
 
@@ -40,11 +42,13 @@ public class Main {
         ObjectOutputStream escritor = null;
         Persona [] miListado  = new Persona [ML];
         Administrador admin = null;
+        Profesor profe = null;
+        Estudiante alumno = null;
         Persona miAux = null;
         //_________________________Desarrollo de la funcionalidad_______________________
-        miArch = new File(planilla);
         try
         {
+            miArch = new File(planilla);
             if(miArch.exists() && miArch.isFile())
             {
                 guia = new FileInputStream(miArch);
@@ -117,6 +121,7 @@ public class Main {
                                     }
                                 }
                             }
+                            
                             intentos = 1;
                             if(validar)
                             {
@@ -141,12 +146,16 @@ public class Main {
                                 {
                                     opt = 4;
                                 }
+                                //opt=inp.nextInt();
                                 switch(opt)
                                 {
                                     case 1://admin
                                         admin = new Administrador(nombre, edad, creacion, contrasena);
                                         do
                                         {    
+                                            admin.Menu();
+                                            System.out.println("Digite su opcion: ");
+                                            ntipo = inp.nextInt();
                                             switch(ntipo)
                                             {
                                                 case 1: //Crear cuenta
@@ -207,19 +216,43 @@ public class Main {
                                         }while(ntipo!=5);    
                                     break;
                                     case 2:
+                                        profe = new Profesor(nombre, edad, creacion, contrasena);
                                         do
                                         {
+                                            profe.Menu();
+                                            System.out.println("Digite su opción:");
+                                            opt2 = inp.nextInt();
                                             switch(opt2){
                                             case 1://    Verificar Proyectos
-                                            break; 
+                                                break; 
                                             case 2:  //Mensaje a Estudiante
-                                            break; 
+                                                System.out.println("Digite el nombre del estudiante para chatear: ");
+                                                inp.nextLine();
+                                                nombre = inp.nextLine();
+                                                validar = false;
+                                                for(int i=0; i<con; i++)
+                                                {
+                                                    if(miListado[i].getUsuario().equals(nombre) && miListado[i].getTipo() == 'e')
+                                                    {
+                                                        validar = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if(validar)
+                                                {
+                                                    System.out.println("Abriendo chat...");
+                                                }
+                                                else 
+                                                {
+                                                    System.out.println("El estudiante no existe...");
+                                                }
+                                                break; 
                                             case 3:  //Orientacion a Estudiante
-                                            break; 
+                                                break; 
                                             case 4:  //Listar Estudiantes
-                                            break; 
+                                                break; 
                                             case 5:  //Listar Cursos
-                                            break; 
+                                                break; 
                                             default:
                                                     System.out.println("Desplegando el menu de nuevo");
                                                 break;
@@ -228,7 +261,12 @@ public class Main {
                                         }while(opt2!=6);
                                     break;    
                                     case 3:
-                                        do{
+                                        alumno = new Estudiante(nombre, edad, creacion, contrasena);
+                                        do
+                                        {
+                                            alumno.Menu();
+                                            System.out.println("Digite su opción:");
+                                            opt3 = inp.nextInt();
                                             switch(opt3)    //Estudiamnte
                                             {
                                                 case 1: //ver cursos
@@ -241,6 +279,8 @@ public class Main {
                                                 break;
                                                 case 5: //Cancelar un curso
                                                 break;
+                                                case 6:
+                                                    System.out.println("Saliendo del programa");
                                                 default:
                                                     System.out.println("Desplegando el menu de nuevo");
                                                 break;
@@ -272,7 +312,7 @@ public class Main {
                 {
                     System.out.println("Excepción atrapada:" + e.getMessage());
                 }
-            }while(opt!=4);
+            }while(mp!=4);
             try
             {
                 miArch = new File(planilla);
@@ -280,7 +320,8 @@ public class Main {
                 escritor = new ObjectOutputStream(registro);
                 for(int i=0; i<con; i++)
                 {
-                    escritor.writeObject(miListado[i]);
+                    miAux = miListado[i];
+                    escritor.writeObject(miAux);
                 }
                 System.out.println("Se ha guardado el archivo con éxito");
             }
