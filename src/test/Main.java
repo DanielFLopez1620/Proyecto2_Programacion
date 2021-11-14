@@ -241,6 +241,7 @@ public class Main {
                                                 if(validar)
                                                 {
                                                     System.out.println("Abriendo chat...");
+                                                    profe.chatearCon(nombre, inp);
                                                 }
                                                 else 
                                                 {
@@ -274,7 +275,28 @@ public class Main {
                                                 case 2: //enviar proyectos
                                                 break;
                                                 case 3: //Buzon de mensajeria
-                                                break;
+                                                    System.out.println("Digite el nombre del profesor para chatear: ");
+                                                    inp.nextLine();
+                                                    nombre = inp.nextLine();
+                                                    validar = false;
+                                                    for(int i=0; i<con; i++)
+                                                    {
+                                                        if(miListado[i].getUsuario().equals(nombre) && miListado[i].getTipo() == 'p')
+                                                        {
+                                                            validar = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if(validar)
+                                                    {
+                                                        System.out.println("Abriendo chat...");
+                                                        alumno.chatearCon(nombre, inp);
+                                                    }
+                                                    else 
+                                                    {
+                                                        System.out.println("El profesor no existe...");
+                                                    }
+                                                    break;
                                                 case 4: //Inscribir un curso
                                                 break;
                                                 case 5: //Cancelar un curso

@@ -1,6 +1,13 @@
 package Usuarios;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Date;
+import java.util.Scanner;
 
 public class Estudiante extends Persona
 {
@@ -31,6 +38,74 @@ public class Estudiante extends Persona
         System.out.println("| 5) Cancelar un curso                |");
         System.out.println("| 6) Salir                            |");
         System.out.println("+-------------------------------------+");
+        return;
+    }
+    public void chatearCon(String nombre, Scanner inp) throws IOException
+    {
+        String comunicacion = nombre;
+        File chat = new File(comunicacion);
+        FileReader  fr = null;
+        BufferedReader br = null;
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        boolean bandera = false;
+        boolean inicio = false;
+        String mensaje = "E: ";
+        String oracion = "";
+        if(!chat.isDirectory())
+        {
+            if(chat.mkdir())
+            {
+                bandera = true;
+            }
+        }
+        else
+        {
+            bandera = true;
+        }
+        if(bandera)
+        {
+            comunicacion += "\\" + nombre + "_" + this.usuario + ".txt";
+            chat = new File(comunicacion);
+            if(chat.exists())
+            {
+                fr = new FileReader(chat);
+                br = new BufferedReader(fr);
+                while(true)
+                {
+                    oracion = br.readLine();
+                    if(oracion == null)
+                    {
+                        break;
+                    }
+                    System.out.println(oracion);
+                }
+                br.close();
+            }
+            else
+            {
+                if(chat.createNewFile())
+                {
+                    System.out.println("Chat creado con éxtio...");
+                    inicio = true;
+                }
+            }
+            chat = new File(comunicacion);
+            fw = new FileWriter(chat, true);
+            bw = new BufferedWriter(fw);
+            if(inicio)
+            {
+                bw.write("Chat entre el profesor: " + nombre + " y el estudiante: " + this.usuario);
+            }
+            System.out.println("Digite el mensaje a añadir: ");
+            mensaje += inp.nextLine();
+            bw.write("\r\n" + mensaje);
+            bw.close();
+        }
+        else
+        {
+            System.out.println("Ha ocurrido un problema con el directorio");
+        }
         return;
     }
 }
