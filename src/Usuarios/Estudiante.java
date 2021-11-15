@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Scanner;
 
+import Asignaturas.Asignatura;
+
 public class Estudiante extends Persona
 {
     /**
@@ -40,6 +42,13 @@ public class Estudiante extends Persona
         System.out.println("+-------------------------------------+");
         return;
     }
+    /**
+     * Función para generar canal de comunicación entre estudiante y profesor
+     * (Canal de estudiante)
+     * @param nombre
+     * @param inp
+     * @throws IOException
+     */
     public void chatearCon(String nombre, Scanner inp) throws IOException
     {
         String comunicacion = nombre;
@@ -108,4 +117,34 @@ public class Estudiante extends Persona
         }
         return;
     }
+    public void InscribirCurso(Estudiante estu,Asignatura asig)
+    {
+        int pos=asig.ultimoEstudiante();
+        asig.setAlumnos(pos, estu);
+        return;
+    }
+    /*public void EliminarCurso(int pos, Asignatura asig)
+    {
+        int con=asig.ultimoEstudiante();
+        Estudiante[] aux= new Estudiante[con];
+        for(int i=0;i<con;i++)
+        {
+            aux[i]=asig.getAlumnos()[i];
+        }
+        for(int j=0; j<con; j++)
+        {
+            if(j==pos){
+                while(j<con-1){
+                    aux[j]=aux[j+1];
+                    j++;
+                }
+            }
+            break;
+        }
+        for(int l=0;l<con-1;l++)
+        {
+            asig.setAlumnos(l, aux[l]);
+        }
+        return;
+    }  */
 }

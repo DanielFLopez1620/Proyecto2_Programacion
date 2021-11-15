@@ -35,10 +35,18 @@ public class Asignatura implements Serializable
      * @param pos
      * @param siguiente
      */
-    public void setEstudiantes(int pos, Estudiante siguiente)
+    public void setAlumnos(int pos, Estudiante siguiente) 
     {
         this.alumnos[pos] = siguiente;
         return;
+    }
+    /**
+     * Getter del arreglo de alumnos
+     * @return
+     */
+    public Estudiante[] getAlumnos() 
+    {
+        return alumnos;
     }
     /**
      * Getter del nombre
@@ -90,5 +98,37 @@ public class Asignatura implements Serializable
     {
         this.creditos = creditos;
         return;
+    }
+    /**
+     * Verifica la cantidad de estudiantes en la materia
+     * @return num estudiantes
+     */
+    public int ultimoEstudiante()
+    {
+        int num = Asignatura.MS;
+        for(int i=0; i<num; i++)
+        {
+            if(this.alumnos[i]== null)
+            {
+                return i;
+            }
+        }
+        return num - 1;
+    }
+    @Override
+    public String toString() 
+    {
+        String cadena = "";
+        cadena += "Asignaturas{\n";
+        cadena += "\nNombre= " + nombre + "\nprofesor= " + profesor + "\ncreditos= " + creditos;
+        cadena += "\nAlumnos= "; 
+        for(int i=0;i<15;i++)
+        { 
+            if(alumnos [i]==null)
+            {
+                cadena += "\n" + alumnos[i];
+            }
+        }
+        return cadena;
     }
 }

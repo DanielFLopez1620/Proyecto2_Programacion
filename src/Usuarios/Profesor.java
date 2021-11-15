@@ -2,6 +2,9 @@ package Usuarios;
 
 import java.util.Date;
 import java.util.Scanner;
+
+import Asignaturas.Asignatura;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -40,6 +43,13 @@ public class Profesor extends Persona
         System.out.println("+-------------------------------------+");
         return;
     }
+    /**
+     * Generar un canal de comunicación entre profesor y estudiante
+     * (Canal del profesor)
+     * @param nombre
+     * @param inp
+     * @throws IOException
+     */
     public void chatearCon(String nombre, Scanner inp) throws IOException
     {
         String comunicacion = this.getUsuario();
@@ -107,6 +117,26 @@ public class Profesor extends Persona
             System.out.println("Ha ocurrido un problema con el directorio");
         }
         return;
+    }
+    /**
+     * Imprime el listado de estudiantes de una clase
+     * @param lista
+     */
+    public void ListarEstudiante(Asignatura lista)
+    {
+        int con = lista.ultimoEstudiante();
+        Estudiante[] estu=new Estudiante[con];        
+        System.out.print("Los de la asignatura "+lista.getNombre()+" son:");
+        for(int i=0; i<con;i++)
+        {
+            estu[i]=lista.getAlumnos()[i];
+            System.out.print("El Nombre de Estudiante: "+ i +" "+ estu[i].getUsuario());
+        }
+        return;
+    }
+    public void EliminarEstudiante(Asignatura materia)
+    {
+        
     }
 }
 
