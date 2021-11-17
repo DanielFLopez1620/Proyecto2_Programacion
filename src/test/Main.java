@@ -280,11 +280,12 @@ public class Main
                                                         if(miListado[j].getUsuario().equals(nombreprofe) && miListado[j].getTipo()=='p')
                                                         {
                                                             valida=true;
+                                                            break;
                                                         }
                                                     }
                                                     if(valida)
                                                     {
-                                                        System.out.println("Poresor siendo guardado...");
+                                                        System.out.println("Profesor siendo guardado...");
                                                         System.out.println("Ingrese los creditos del profesor: ");
                                                         creditos=inp.nextInt();
                                                         inp.nextLine();
@@ -316,13 +317,15 @@ public class Main
                                                                     encontrado = false;
                                                                     if(miListado[j].getUsuario().equals(nombreestudiante) && miListado[j].getTipo() == 'e')
                                                                     {
+                                                                        nombre=miListado[j].getUsuario();
                                                                         edad = miListado[j].getEdad();
                                                                         creacion = miListado[j].getCreacion();
                                                                         contrasena = miListado[j].getContrasena();
                                                                         alaux = new Estudiante(nombre, edad, creacion, contrasena);
                                                                         plan[estu] = alaux;
                                                                         estu++;
-                                                                        encontrado = true;                                                                            
+                                                                        encontrado = true; 
+                                                                        break;                                                                           
                                                                     }
                                                                 }
                                                                 if(!encontrado)
