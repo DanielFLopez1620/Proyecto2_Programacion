@@ -131,16 +131,16 @@ public class Estudiante extends Persona
             if(listado[i].getNombre().equals(nombre))
             {
                 hallado = true;
-                System.out.println("ASignatura encontrada...");
-                if(listado[i].ultimoEstudiante()==1)
-                {
-                    listado[i].setAlumnos(0, null);
-                    break;
-                }
+                System.out.println("Asignatura encontrada...");
                 for(int j=0; j<listado[i].ultimoEstudiante(); j++)
                 {
                     if(listado[i].getAlumnos()[j].getUsuario().equals(estudiante))
                     {
+                        if(j==listado[i].ultimoEstudiante()-1)
+                        {
+                            listado[i].setAlumnos(j, null);
+                            break;
+                        }
                         for(int k=j; k<listado[i].ultimoEstudiante()-1; k++)
                         {
                             listado[i].getAlumnos()[k]=listado[i].getAlumnos()[k+1];

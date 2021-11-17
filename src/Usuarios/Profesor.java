@@ -276,15 +276,13 @@ public class Profesor extends Persona
     public void ListarEstudiante(Asignatura lista)
     {
         int con = lista.ultimoEstudiante();
-        Estudiante[] estu=new Estudiante[con];        
-        System.out.print("Los de la asignatura "+lista.getNombre()+" son:");
+        Estudiante[] estu = lista.getAlumnos();        
+        System.out.println("Los estudiantes de la asignatura "+lista.getNombre()+" son:\n");
         for(int i=0; i<con;i++)
         {
-            estu[i]=lista.getAlumnos()[i];
-            System.out.println("El Nombre de Estudiante: "+ i+1 +" "+ estu[i].getUsuario());
+            System.out.println("El Nombre de Estudiante: "+ (i+1) + " "+ estu[i].getUsuario());
         }
         return;
     }
-    
 }
 

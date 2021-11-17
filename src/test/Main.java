@@ -573,7 +573,7 @@ public class Main
                                             alumno.Menu();
                                             System.out.println("Digite su opción:");
                                             opt3 = inp.nextInt();
-                                            switch(opt3)    //Estudiamnte
+                                            switch(opt3)  //Estudiamnte
                                             {
                                                 case 1: //---------------------------Ver cursos-----------------------------------------------
                                                 for(int i=0;i<cla;i++)
@@ -711,6 +711,7 @@ public class Main
                                                     System.out.println("ingrese el curso que desea cancelar ");
                                                     inp.nextLine();
                                                     nombreAsigEliminar=inp.nextLine();
+                                                    validar = true;
                                                     alumno.EliminarCurso(nombreAsigEliminar, alumno.getUsuario(), misMaterias, cla);
                                                     break;
                                                 case 6://---------------------------Salida del programa-------------------------------
@@ -744,11 +745,11 @@ public class Main
                                         novalido = !novalido;
                                         break;
                                     case 2:
-                                        FuncionesPrograma.FuncionalidadE();
+                                        FuncionesPrograma.FuncionalidadP();
                                         novalido = !novalido;
                                         break;
                                     case 3:
-                                        FuncionesPrograma.FuncionalidadP();
+                                        FuncionesPrograma.FuncionalidadE();
                                         novalido = !novalido;
                                     break;
                                     default:

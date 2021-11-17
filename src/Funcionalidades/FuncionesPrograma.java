@@ -92,8 +92,8 @@ public class FuncionesPrograma
         System.out.println("|          MENÚ DE MANUALES           |");
         System.out.println("+-------------------------------------+");
         System.out.println("| 1) Manual de Administrador          |");
-        System.out.println("| 2) Manual de Estudiante             |");
         System.out.println("| 2) Manual de Profesor               |");
+        System.out.println("| 2) Manual de Estudiante             |");
         System.out.println("| 4) Salir                            |");
         System.out.println("+-------------------------------------+");
     }
