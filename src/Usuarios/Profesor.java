@@ -119,6 +119,157 @@ public class Profesor extends Persona
         return;
     }
     /**
+     * Generar un canal de comunicación entre profesor y estudiante
+     * (Canal del profesor)
+     * @param nombre
+     * @param inp
+     * @throws IOException
+     */
+    public void chatearCon(String nombre, String motivacion) throws IOException
+    {
+        String comunicacion = this.getUsuario();
+        File chat = new File(comunicacion);
+        FileReader  fr = null;
+        BufferedReader br = null;
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        boolean bandera = false;
+        boolean inicio = false;
+        String mensaje = "P: Recomendaciones: ";
+        String oracion = "";
+        if(!chat.isDirectory())
+        {
+            if(chat.mkdir())
+            {
+                bandera = true;
+            }
+        }
+        else
+        {
+            bandera = true;
+        }
+        if(bandera)
+        {
+            comunicacion += "\\" + this.usuario + "_" + nombre + ".txt";
+            chat = new File(comunicacion);
+            if(chat.exists())
+            {
+                fr = new FileReader(chat);
+                br = new BufferedReader(fr);
+                while(true)
+                {
+                    oracion = br.readLine();
+                    if(oracion == null)
+                    {
+                        break;
+                    }
+                    System.out.println(oracion);
+                }
+                br.close();
+            }
+            else
+            {
+                if(chat.createNewFile())
+                {
+                    System.out.println("Chat creado con éxtio...");
+                    inicio = true;
+                }
+            }
+            chat = new File(comunicacion);
+            fw = new FileWriter(chat, true);
+            bw = new BufferedWriter(fw);
+            if(inicio)
+            {
+                bw.write("Chat entre el profesor: " + this.usuario + " y el estudiante: " + nombre);
+            }
+            System.out.println("Digite el mensaje a añadir: ");
+            mensaje += motivacion;
+            bw.write("\r\n" + mensaje);
+            bw.close();
+        }
+        else
+        {
+            System.out.println("Ha ocurrido un problema con el directorio");
+        }
+        return;
+    }
+    /**
+     * Comunicación de una nueva asignación disponible
+     * @param nombre
+     * @param motivacion
+     * @param carpeta
+     * @throws IOException
+     */
+    public void chatearCon(String nombre, String motivacion, String carpeta) throws IOException
+    {
+        String comunicacion = this.getUsuario();
+        File chat = new File(comunicacion);
+        FileReader  fr = null;
+        BufferedReader br = null;
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        boolean bandera = false;
+        boolean inicio = false;
+        String mensaje = "P: ¡IMPORTANTE! Asiganción: ";
+        String oracion = "";
+        if(!chat.isDirectory())
+        {
+            if(chat.mkdir())
+            {
+                bandera = true;
+            }
+        }
+        else
+        {
+            bandera = true;
+        }
+        if(bandera)
+        {
+            comunicacion += "\\" + this.usuario + "_" + nombre + ".txt";
+            chat = new File(comunicacion);
+            if(chat.exists())
+            {
+                fr = new FileReader(chat);
+                br = new BufferedReader(fr);
+                while(true)
+                {
+                    oracion = br.readLine();
+                    if(oracion == null)
+                    {
+                        break;
+                    }
+                    System.out.println(oracion);
+                }
+                br.close();
+            }
+            else
+            {
+                if(chat.createNewFile())
+                {
+                    System.out.println("Chat creado con éxtio...");
+                    inicio = true;
+                }
+            }
+            chat = new File(comunicacion);
+            fw = new FileWriter(chat, true);
+            bw = new BufferedWriter(fw);
+            if(inicio)
+            {
+                bw.write("Chat entre el profesor: " + this.usuario + " y el estudiante: " + nombre);
+            }
+            System.out.println("Digite el mensaje a añadir: ");
+            mensaje += motivacion;
+            bw.write("\r\n" + mensaje);
+            bw.write("\r\n" + "La tarea debe ser entregada en la carpeta: " + carpeta);
+            bw.close();
+        }
+        else
+        {
+            System.out.println("Ha ocurrido un problema con el directorio");
+        }
+        return;
+    }
+    /**
      * Imprime el listado de estudiantes de una clase
      * @param lista
      */
@@ -130,13 +281,10 @@ public class Profesor extends Persona
         for(int i=0; i<con;i++)
         {
             estu[i]=lista.getAlumnos()[i];
-            System.out.print("El Nombre de Estudiante: "+ i +" "+ estu[i].getUsuario());
+            System.out.println("El Nombre de Estudiante: "+ i+1 +" "+ estu[i].getUsuario());
         }
         return;
     }
-    public void EliminarEstudiante(Asignatura materia)
-    {
-        
-    }
+    
 }
 

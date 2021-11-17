@@ -1,10 +1,14 @@
 package test;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 //_________________________Importación de paquetes de Java________________________
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -18,8 +22,8 @@ import Usuarios.Estudiante;
 import Usuarios.Persona;
 import Usuarios.Profesor;
 
-public class Main {
-
+public class Main 
+{
     public static final int ML = 20;
     public static void main(String[] args) 
     {
@@ -31,6 +35,7 @@ public class Main {
         String nombreprofe = "";
         String nombreestudiante = "";
         String nombreasig="";
+        String texto = "";
         String planilla = "planillaU.bin";
         String materias = "materiasU.bin";
         int opt = 0, opt2 = 0, ntipo=0, opt3=0, mp = 0;
@@ -49,6 +54,10 @@ public class Main {
         Scanner inp = new Scanner(System.in);
         File miArch = null;
         File miMat = null;
+        FileWriter puntero = null;
+        BufferedWriter escribir = null;
+        FileReader miguia = null;
+        BufferedReader lectura = null;
         FileInputStream guia = null;
         ObjectInputStream lector = null;
         FileOutputStream registro = null;
@@ -210,7 +219,7 @@ public class Main {
                                 //opt=inp.nextInt();
                                 switch(opt)
                                 {
-                                    case 1://admin
+                                    case 1://______________________________________admin_________________________________________________
                                         admin = new Administrador(nombre, edad, creacion, contrasena);
                                         do
                                         {    
@@ -219,7 +228,7 @@ public class Main {
                                             ntipo = inp.nextInt();
                                             switch(ntipo)
                                             {
-                                                case 1: //Crear cuenta
+                                                case 1: //----------------------------------Crear cuenta----------------------------------
                                                     System.out.println("Ingrese su nombre de usuario: ");
                                                     usuario=inp.next();
                                                     System.out.println("Ingrese la contraseña: ");
@@ -241,15 +250,15 @@ public class Main {
                                                         {
                                                             case 1:
                                                                 tipo='a';
-                                                                novalido = !novalido;
+                                                                novalido = false;
                                                                 break;
                                                             case 2:
                                                                 tipo='p';
-                                                                novalido = !novalido;
+                                                                novalido = false;
                                                                 break;
                                                             case 3:
                                                                 tipo='e';
-                                                                novalido = !novalido;
+                                                                novalido = false;
                                                             break;
                                                             default:
                                                                 tipo =' '; 
@@ -260,7 +269,7 @@ public class Main {
                                                     miListado[con]=admin.CrearCuenta(usuario, edad, dat, contrasena, tipo);
                                                     con++;
                                                     break;    
-                                                case 2: 
+                                                case 2: //--------------------------------Creacion de asignatura----------------------------------
                                                     System.out.println("Ingrese el nombre de la asignatura: ");
                                                     nombremateria=inp.next();
                                                     System.out.println("Ingrese el nombre del profesor: ");
@@ -296,8 +305,8 @@ public class Main {
                                                             for(int i=0; i<Asignatura.MS; i++)
                                                             {
                                                                 System.out.println("Digite el nombre del estudiante (-1 para salir):");
-                                                                nombre = inp.nextLine();
-                                                                if(nombre.equals("-1"))
+                                                                nombreestudiante = inp.nextLine();
+                                                                if(nombreestudiante.equals("-1"))
                                                                 {
                                                                     System.out.println("Saliendo....");
                                                                     break;
@@ -305,7 +314,7 @@ public class Main {
                                                                 for(int j=0; j<con; j++)
                                                                 {
                                                                     encontrado = false;
-                                                                    if(miListado[j].getUsuario().equals(nombreestudiante) && miListado[j].getTipo()== 'e')
+                                                                    if(miListado[j].getUsuario().equals(nombreestudiante) && miListado[j].getTipo() == 'e')
                                                                     {
                                                                         edad = miListado[j].getEdad();
                                                                         creacion = miListado[j].getCreacion();
@@ -337,30 +346,152 @@ public class Main {
                                                     System.out.println("El profesor no existe...");
                                                     }
                                                     break;
-                                                case 3: //Eliminar Asignatura
+                                                case 3: //----------------------------Eliminar Asignatura---------------------------------------
+                                                    inp.nextLine();
+                                                    System.out.println("Digite el nombre de la asignatura a eliminar: ");
+                                                    nombre = inp.nextLine();
+                                                    admin.eliminarAsignatura(misMaterias, cla, nombre);
+                                                    cla = admin.numClases(misMaterias);
                                                     break;
-                                                case 4: //Modificar una asignatura
+                                                case 4: //-----------------------------Modificar una asignatura----------------------------------
+                                                    inp.nextLine();    
+                                                    System.out.println("Digite el nombre de la asignatura a modificar: ");
+                                                    nombre = inp.nextLine();
+                                                    valida = false;
+                                                    System.out.println("¿Desea modificar el numero de créditos?(s/n)");
+                                                    respuesta = inp.nextLine().charAt(0);
+                                                    if(respuesta == 's')
+                                                    {
+                                                        do
+                                                        {
+                                                            System.out.println("Digite el nuevo numero de creditos: (1-4)");
+                                                            creditos = inp.nextInt();
+                                                        }while(creditos>4 || creditos<1);
+                                                        admin.modificarAsignatura(misMaterias, cla, nombre, creditos);
+                                                        valida = true;
+                                                    }
+                                                    inp.nextLine();
+                                                    System.out.println("¿Desea modificar el profesor?(s/n)");
+                                                    respuesta = inp.nextLine().charAt(0);
+                                                    if(respuesta == 's')
+                                                    {
+                                                        System.out.println("Digite el nombre del profe: ");
+                                                        nombre = inp.nextLine();
+                                                        admin.modificarAsignatura(misMaterias, cla, nombre, nombre);
+                                                        valida = true;
+                                                    }
+                                                    if(!valida)
+                                                    {
+                                                        System.out.println("No se ha realizado ninguna modificación...");
+                                                    }
                                                     break;
-                                                case 5:
+                                                case 5: //-------------------------Opcion de salida-----------------------------------
                                                     System.out.println("Volviendo al menu general");
-                                                break;
+                                                    break;
                                                 default:
                                                     System.out.println("Desplegando el menu de nuevo");
-                                                break;
+                                                    break;
                                             }
                                         }while(ntipo!=5);    
                                     break;
-                                    case 2:
+                                    case 2:  //____________________________________Profesor______________________________________________________
                                         profe = new Profesor(nombre, edad, creacion, contrasena);
                                         do
                                         {
                                             profe.Menu();
                                             System.out.println("Digite su opción:");
                                             opt2 = inp.nextInt();
-                                            switch(opt2){
-                                            case 1://    Verificar Proyectos
+                                            switch(opt2)
+                                            {
+                                            case 1://-----------------------------Verificar Proyectos--------------------------------------------
+                                                System.out.println("¿Desea crear una asignación (1) ó ver asignaciones(2)?");
+                                                estu = inp.nextInt();
+                                                inp.nextLine();
+                                                if(estu == 1)
+                                                {
+                                                    System.out.println("Digite la asignatura a validar: ");
+                                                    nombre = inp.nextLine();
+                                                    encontrado = false;
+                                                    for(int h=0; h<cla; h++)
+                                                    {
+                                                        if(misMaterias[h].getNombre().equals(nombre))
+                                                        {
+                                                            nombreasig = nombre;
+                                                            System.out.println("Digite la especificación de la asignación: ");
+                                                            texto = inp.nextLine();
+                                                            System.out.println("Digite el nombre de la carpeta:");
+                                                            nombreasig += "_" + inp.next();
+                                                            miArch = new File(nombreasig);
+                                                            valida = miArch.mkdir();
+                                                            if(valida)
+                                                            {
+                                                                classAux = misMaterias[h];
+                                                                plan = classAux.getAlumnos();
+                                                                for(int i=0; i<estu; i++)
+                                                                {
+                                                                    profe.chatearCon(plan[i].getUsuario(), texto, nombreasig);
+                                                                }
+                                                            }
+                                                            encontrado = true;
+                                                        }
+                                                    }
+                                                }
+                                                else if(estu == 2)
+                                                {
+                                                    System.out.println("Digite la asignatura a validar: ");
+                                                    nombre = inp.nextLine();
+                                                    encontrado = false;
+                                                    for(int h=0; h<cla; h++)
+                                                    {
+                                                        if(misMaterias[h].getNombre().equals(nombre))
+                                                        {
+                                                            nombreasig = nombre;
+                                                            System.out.println("Digite el nombre de la carpeta:");
+                                                            nombreasig += "_" + inp.next();
+                                                            miArch = new File(nombreasig);
+                                                            String archivos [] = miArch.list();
+                                                            do
+                                                            {
+                                                                for(int a=0; a<archivos.length; a++)
+                                                                {
+                                                                    System.out.println((a+1) + ") " + archivos[a]);
+                                                                }
+                                                                System.out.println("Digite el nombre del archivo a ver: ");
+                                                                nombre = inp.nextLine();
+                                                                miArch = new File(nombreasig + "\\" + nombre);
+                                                                if(miArch.exists())
+                                                                {
+                                                                    miguia = new FileReader(miArch);
+                                                                    lectura = new BufferedReader(miguia);
+                                                                    String oracion = lectura.readLine(); 
+                                                                    while(true)
+                                                                    {
+                                                                        if(oracion == null)
+                                                                        {
+                                                                            break;
+                                                                        }
+                                                                        System.out.println(oracion);
+                                                                        oracion = lectura.readLine();
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    System.out.println("Archivo inexistente");
+                                                                }
+                                                                System.out.println("¿Desea salir?(-1)");
+                                                                estu = inp.nextInt();
+                                                                inp.nextLine();
+                                                            }while(estu != -1);
+                                                            lectura.close();
+                                                        }
+                                                    }
+                                                }
+                                                else 
+                                                {
+                                                    System.out.println("Opción inválida");
+                                                }
                                                 break; 
-                                            case 2:  //Mensaje a Estudiante
+                                            case 2:  //---------------------------Mensaje a Estudiante-------------------------------------------
                                                 System.out.println("Digite el nombre del estudiante para chatear: ");
                                                 inp.nextLine();
                                                 nombre = inp.nextLine();
@@ -383,37 +514,59 @@ public class Main {
                                                     System.out.println("El estudiante no existe...");
                                                 }
                                                 break; 
-                                            case 3:  //Orientacion a Estudiante
-                                                break; 
-                                            case 4:  //Listar Estudiantes
-                                                System.out.println("Digite el nombre de la materia a listar: ");
+                                            case 3:  //--------------------------Orientacion a Estudiante-------------------------------------------
+                                                System.out.println("Digite la asignatura para crear una comunicación: ");
                                                 nombre = inp.nextLine();
+                                                verific = false;
+                                                for(int k=0; k<cla; k++)
+                                                {
+                                                    if(misMaterias[k].getNombre().equals(nombre))
+                                                    {
+                                                        verific = true;
+                                                        System.out.println("Clase encontrada...");
+                                                        System.out.println("Digite la recomendación a enviar: ");
+                                                        texto = inp.nextLine();
+                                                        classAux = misMaterias[k];
+                                                        estu = classAux.ultimoEstudiante();
+                                                        plan = classAux.getAlumnos();
+                                                        for(int x=0; x<estu; x++)
+                                                        {
+                                                            profe.chatearCon(plan[x].getUsuario(), texto);
+                                                        }
+                                                    }
+                                                }
+                                                if(!verific)
+                                                {
+                                                    System.out.println("Clase no encontrada");
+                                                }
+                                                break; 
+                                            case 4:  //---------------------------Listar Estudiantes----------------------------------------------------
                                                 for(int i=0; i<cla; i++)
                                                 {
-                                                    if(misMaterias[i].getNombre().equals(nombre) && misMaterias[i].getProfesor().equals(profe.getUsuario()))
+                                                    if(misMaterias[i].getProfesor().equals(profe.getUsuario()))
                                                     {
                                                         profe.ListarEstudiante(misMaterias[i]);
                                                     }
                                                 }
                                                 break; 
-                                            case 5:  //Listar Cursos
+                                            case 5:  //-----------------------------------Listar Cursos-------------------------------------------------
                                                 System.out.println("Mostrando listado de cursos...");
                                                 for(int j=0; j<cla; j++)
                                                 {
                                                     if(misMaterias[j].getProfesor().equals(profe.getUsuario()))
                                                     {
-                                                        System.out.println(misMaterias[j]);
+                                                        System.out.println(j+1+"la materia: "+ misMaterias[j].getNombre());
                                                     }
                                                 }
                                                 break; 
                                             default:
-                                                    System.out.println("Desplegando el menu de nuevo");
+                                                System.out.println("Desplegando el menu de nuevo");
                                                 break;
                                             }
                                             
                                         }while(opt2!=6);
                                     break;    
-                                    case 3:
+                                    case 3:  //______________________________________Estudiante_____________________________________________
                                         alumno = new Estudiante(nombre, edad, creacion, contrasena);
                                         do
                                         {
@@ -422,11 +575,91 @@ public class Main {
                                             opt3 = inp.nextInt();
                                             switch(opt3)    //Estudiamnte
                                             {
-                                                case 1: //ver cursos
+                                                case 1: //---------------------------Ver cursos-----------------------------------------------
+                                                for(int i=0;i<cla;i++)
+                                                {
+                                                    for(int j=0;j<misMaterias[i].ultimoEstudiante();j++)
+                                                    {
+                                                        if(misMaterias[i].getAlumnos()[j].getUsuario().equals(alumno.getUsuario()))
+                                                        {
+                                                            System.out.println("el curso inscrito es: "+ misMaterias[i].getNombre()); 
+                                                        }
+                                                    }
+                                                }
                                                 break;
-                                                case 2: //enviar proyectos
-                                                break;
-                                                case 3: //Buzon de mensajeria
+                                                case 2: //---------------------------Enviar proyectos-----------------------------------------
+                                                    inp.nextLine();
+                                                    System.out.println("Digite la materia a la que enviar el proyecto: ");
+                                                    nombre = inp.nextLine();
+                                                    validar = false;
+                                                    for(int i=0;i<cla;i++)
+                                                    {
+                                                        if(misMaterias[i].getNombre().equals(nombre))
+                                                        {
+                                                            for(int j=0;j<misMaterias[i].ultimoEstudiante();j++)
+                                                            {
+                                                                if(misMaterias[i].getAlumnos()[j].getUsuario().equals(alumno.getUsuario()))
+                                                                {
+                                                                    validar = true;
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+                                                        if(validar)
+                                                        {
+                                                            break;
+                                                        }
+                                                    }
+                                                    if(validar)
+                                                    {
+                                                        nombreasig = nombre;
+                                                        System.out.println("Digite el nombre del extensivo dado por el profe: ");
+                                                        System.out.println("(Por ejemplo, si es asignatura_mate, digite mate)");
+                                                        nombre = inp.nextLine();
+                                                        miArch = new File(nombreasig + "_" + nombre);
+                                                        if(miArch.exists())
+                                                        {
+                                                            System.out.println("Digite el nombre del proyecto a entregar: ");
+                                                            nombremateria = inp.nextLine();
+                                                            miArch = new File(nombreasig + "_" + nombre + "\\" + nombremateria + ".txt");
+                                                            if(miArch.createNewFile())
+                                                            {
+                                                                System.out.println("Archivo creado con éxito");
+                                                                puntero = new FileWriter(miArch);
+                                                                escribir = new BufferedWriter(puntero);
+                                                                System.out.println("Digite la linea 1: ");
+                                                                texto = inp.nextLine();
+                                                                escribir.write(texto);
+                                                                while(true)
+                                                                {
+                                                                    System.out.println("Digite la siguiente linea:");
+                                                                    texto = inp.nextLine();
+                                                                    if(texto.equals("-1"))
+                                                                    {
+                                                                        System.out.println("Guardando archivo");
+                                                                        break;
+                                                                    }
+                                                                    escribir.write("\r\n" + texto);
+                                                                }
+                                                                escribir.close();
+                                                                System.out.println("Tarea enviada....");
+                                                            }
+                                                            else
+                                                            {
+                                                                System.out.println("Error con la creación");
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            System.out.println("Ditectorio inexistente, por ende, inválido");
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        System.out.println("Materia inexistento o no vinculada");
+                                                    }
+                                                    break;
+                                                case 3: //----------------------------Buzon de mensajeria-------------------------------------
                                                     System.out.println("Digite el nombre del profesor para chatear: ");
                                                     inp.nextLine();
                                                     nombre = inp.nextLine();
@@ -449,27 +682,38 @@ public class Main {
                                                         System.out.println("El profesor no existe...");
                                                     }
                                                     break;
-                                                case 4: //Inscribir un curso
-                                                
-                                                    System.out.print("Ingresa la asignatura que desea ");
+                                                case 4: //---------------------------------Inscribir un curso---------------------------------
+                                                    System.out.println("Asignaturas disponibles: ");    
+                                                    for(int e=0; e<cla; e++)
+                                                    {
+                                                        System.out.println(misMaterias[e].getNombre());
+                                                    }
+                                                    System.out.print("Ingresa la asignatura que desea inscribir: ");
                                                     inp.nextLine();
                                                     nombreasig = inp.nextLine();
+                                                    encontrado = false;
                                                     for(int i=0; i<cla; i++)
                                                     {
                                                         if(misMaterias[i].getNombre().equals(nombreasig))
                                                         {
                                                             alumno.InscribirCurso(alumno, misMaterias[i]);
-                                                        }
-                                                        else
-                                                        {
-                                                            System.out.println("La clase no existe");    
+                                                            encontrado = true;
+                                                            System.out.println("Inscripción exitosa "); 
                                                         }
                                                     }
-                                                    System.out.print(" Inscribio Materia con exito ");                                                
+                                                    if(!encontrado)
+                                                    {
+                                                        System.out.println("Materia no encontrada");
+                                                    }                                              
                                                     break;
-                                                case 5: //Cancelar un curso
-                                                break;
-                                                case 6:
+                                                case 5: //--------------------------Cancelar un curso---------------------------------
+                                                    String nombreAsigEliminar="";
+                                                    System.out.println("ingrese el curso que desea cancelar ");
+                                                    inp.nextLine();
+                                                    nombreAsigEliminar=inp.nextLine();
+                                                    alumno.EliminarCurso(nombreAsigEliminar, alumno.getUsuario(), misMaterias, cla);
+                                                    break;
+                                                case 6://---------------------------Salida del programa-------------------------------
                                                     System.out.println("Saliendo del programa");
                                                 default:
                                                     System.out.println("Desplegando el menu de nuevo");
@@ -487,11 +731,41 @@ public class Main {
                                 System.out.println("Login Fallido...");
                             }
                             break;
-                        case 2:
+                        case 2: //--------------------------------Manuales-------------------------------------------------------
+                            do  
+                            {
+                                FuncionesPrograma.MenudeManuales();
+                                System.out.println("Digite el menu que desea: ");
+                                tipochar=inp.nextInt();
+                                switch(tipochar)  //Asignación de tipo
+                                {
+                                    case 1:
+                                        FuncionesPrograma.FuncionalidadA();
+                                        novalido = !novalido;
+                                        break;
+                                    case 2:
+                                        FuncionesPrograma.FuncionalidadE();
+                                        novalido = !novalido;
+                                        break;
+                                    case 3:
+                                        FuncionesPrograma.FuncionalidadP();
+                                        novalido = !novalido;
+                                    break;
+                                    default:
+                                        System.out.println("Digite un numero válido: ");
+                                    break;
+                                }
+                            }while(novalido);
                             break;
-                        case 3:
+                        case 3: //------------------------------------------------Créditos-----------------------------------------------
+                            System.out.println(" Proyecto de la asginatura programación avanzada sobre un sistema de gestión de ");
+                            System.out.println(" cursos, es una aplicación de gestión en línea diseñada para instituciones educativas, ");
+                            System.out.println(" con los distintos roles que participan del mismo (administrador, profesor y estudiante), ");
+                            System.out.println(" así como las funcionalidades del sistema. ");
+                            System.out.println(" Proyecto realizado en Java por David Medrano, Juan Rodriguez y Daniel López. ");                        
                             break;
-                        case 4:
+                        case 4: //----------------------------------------Salida de programa---------------------------------------------
+                            System.out.println(" Saliendo del programa, espero hubiera sido una grata experiencia ");
                             break;
                         default:
                             System.out.println("Volviendo a mostrar menu");

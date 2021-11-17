@@ -73,5 +73,102 @@ public class Administrador extends Persona
         Asignatura classAux = new Asignatura(nombremateria, nombreprofe, creditos);
         return classAux;
     }
-    
+    /**
+     * Borra una materia especificada por nombre previamente, solo puede ser realizado por
+     * un administrador
+     * @param listado
+     * @param cla
+     * @param nombre
+     * @return nuevo listado de materias
+     */
+    public Asignatura [] eliminarAsignatura(Asignatura listado[], int cla, String  nombre)
+    {
+        boolean hallado = false;
+        for(int i=0;i<cla; i++)
+        {
+            if(listado[i].getNombre().equals(nombre))
+            {
+                hallado = true;
+                System.out.println("Eliminando la asignatura encontrada...");
+                for(int j=i; j<cla-1; j++) //Ciclo de sobreescritura
+                {
+                    listado[j] = listado[j+1];
+                }
+                break;
+            }
+        }
+        if(!hallado)
+        {
+            System.out.println("Clase no encontrada");
+        }
+        return listado;
+    }
+    /**
+     * Actualiza el número de créditos de una asignatura mediante su nombre
+     * @param listado
+     * @param cla
+     * @param nombre
+     * @param creditos
+     * @return listado actualizado
+     */
+    public Asignatura [] modificarAsignatura(Asignatura listado[], int cla, String nombre, int creditos)
+    {
+        boolean hallado = false;
+        for(int i=0;i<cla; i++)
+        {
+            if(listado[i].getNombre().equals(nombre))
+            {
+                hallado = true;
+                System.out.println("Numero de créditos modificado");
+                listado[i].setCreditos(creditos);
+            }
+        }
+        if(!hallado)
+        {
+            System.out.println("Asignatura no encontrada");
+        }
+        return listado;
+    }
+    /**
+     * Actualiza el profesor a cargo de una asignatura mediante su nombre
+     * @param listado
+     * @param cla
+     * @param nombre
+     * @param profe
+     * @return listado actualizado
+     */
+    public Asignatura [] modificarAsignatura(Asignatura listado[], int cla, String nombre, String profe)
+    {
+        boolean hallado = false;
+        for(int i=0;i<cla; i++)
+        {
+            if(listado[i].getNombre().equals(nombre))
+            {
+                hallado = true;
+                System.out.println("Numero de créditos modificado");
+                listado[i].setProfesor(profe);
+            }
+        }
+        if(!hallado)
+        {
+            System.out.println("Asignatura no encontrada");
+        }
+        return listado;
+    }
+    /**
+     * Método para conocer las clases habilitadas
+     * @param listado
+     * @return numero de clases
+     */
+    public int numClases(Asignatura [] listado)
+    {
+        for(int i=0; i<Asignatura.MS; i++)
+        {
+            if(listado[i] == null)
+            {
+                return i;
+            }
+        }
+        return Asignatura.MS;
+    } 
 }

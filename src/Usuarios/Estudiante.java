@@ -123,28 +123,37 @@ public class Estudiante extends Persona
         asig.setAlumnos(pos, estu);
         return;
     }
-    /*public void EliminarCurso(int pos, Asignatura asig)
+    public Asignatura [] EliminarCurso(String nombre, String estudiante,Asignatura listado [], int cla)
     {
-        int con=asig.ultimoEstudiante();
-        Estudiante[] aux= new Estudiante[con];
-        for(int i=0;i<con;i++)
+        boolean hallado = false;
+        for(int i=0;i<cla; i++)
         {
-            aux[i]=asig.getAlumnos()[i];
-        }
-        for(int j=0; j<con; j++)
-        {
-            if(j==pos){
-                while(j<con-1){
-                    aux[j]=aux[j+1];
-                    j++;
+            if(listado[i].getNombre().equals(nombre))
+            {
+                hallado = true;
+                System.out.println("ASignatura encontrada...");
+                if(listado[i].ultimoEstudiante()==1)
+                {
+                    listado[i].setAlumnos(0, null);
+                    break;
                 }
+                for(int j=0; j<listado[i].ultimoEstudiante(); j++)
+                {
+                    if(listado[i].getAlumnos()[j].getUsuario().equals(estudiante))
+                    {
+                        for(int k=j; k<listado[i].ultimoEstudiante()-1; k++)
+                        {
+                            listado[i].getAlumnos()[k]=listado[i].getAlumnos()[k+1];
+                        }
+                    }
+                }
+                break;
             }
-            break;
         }
-        for(int l=0;l<con-1;l++)
+        if(!hallado)
         {
-            asig.setAlumnos(l, aux[l]);
+            System.out.println("Clase o estudiante no encontrada");
         }
-        return;
-    }  */
+        return listado;
+    }  
 }
